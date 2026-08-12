@@ -2,6 +2,9 @@ package modelo;
 
 import Exceptions.EAnioInvalido;
 import Exceptions.ECalificacion;
+import Exceptions.EVacia;
+
+import java.util.Locale;
 
 //Clase que representa la información de una canción
 public class Cancion {
@@ -16,7 +19,14 @@ public class Cancion {
     public Cancion(){
 
     }
-    public Cancion(String nombre, String artista, String album, int duracionEnSegundos, String genero, int anioLanzamiento) {
+    public Cancion(String nombre, String artista, String album, int duracionEnSegundos, String genero, int anioLanzamiento) throws EVacia {
+
+        if(nombre.isEmpty()||nombre.trim().isEmpty())throw new EVacia("El nombre de la cancion no puede estar vacio");
+
+        if(artista.isEmpty()||artista.trim().isEmpty()) throw new EVacia("El nombre del artista no puede ser vacio");
+        if(album.isEmpty()||album.trim().isEmpty()) throw new EVacia("La cancion no puede no pertenecer a algun album");
+
+
         this.nombre = nombre;
         this.artista = artista;
         this.album = album;

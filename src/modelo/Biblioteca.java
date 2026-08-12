@@ -1,5 +1,7 @@
 package modelo;
 
+import Exceptions.ECancion;
+
 import java.util.ArrayList;
 import java.util.ListIterator;
 
@@ -20,7 +22,7 @@ public class Biblioteca {
         canciones.remove(cancion);
     }
 
-    public Cancion buscarCancion(String nombre) {
+    public Cancion buscarCancion(String nombre) throws ECancion{
 
 
         ListIterator <Cancion> iterator=canciones.listIterator();
@@ -28,8 +30,11 @@ public class Biblioteca {
         while(iterator.hasNext()&&!x.getNombre().equalsIgnoreCase(nombre)){
             x=iterator.next();
         }
-        //se necesita poner una exception
-        return x;
+        if(x!=null){
+            return x;
+        }else{
+            throw new ECancion(nombre);
+        }
     }
 
     public ArrayList<Cancion> getCanciones() {
