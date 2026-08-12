@@ -1,5 +1,8 @@
 package modelo;
 
+import Exceptions.EAnioInvalido;
+import Exceptions.ECalificacion;
+
 //Clase que representa la información de una canción
 public class Cancion {
     private String nombre;
@@ -10,10 +13,13 @@ public class Cancion {
     private int anioLanzamiento;
     private int calificacion;
 
+    public Cancion(){
+
+    }
     public Cancion(String nombre, String artista, String album, int duracionEnSegundos, String genero, int anioLanzamiento) {
         this.nombre = nombre;
         this.artista = artista;
-        album = album;
+        this.album = album;
         this.duracionEnSegundos = duracionEnSegundos;
         this.genero = genero;
         this.anioLanzamiento = anioLanzamiento;
