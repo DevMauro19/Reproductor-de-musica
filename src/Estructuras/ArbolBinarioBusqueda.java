@@ -6,7 +6,7 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> {
 
     private NodoArbol<T> raiz;
     private int tamano;
-
+    private NodoArbol<T> actual;
     public ArbolBinarioBusqueda() {
         raiz = null;
         tamano = 0;
@@ -148,6 +148,13 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> {
         return actual;
     }
 
+    public T obtenerMinimo(){
+        if(raiz==null){
+            return null;
+        }
+        return encontrarMinimo(raiz);
+    }
+
     private T encontrarMinimo(NodoArbol<T> nodo) {
 
         while (nodo.getIzquierda() != null) {
@@ -155,5 +162,100 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> {
         }
 
         return nodo.getDato();
+    }
+
+    public T obtenerSiguiente(T valor) {
+
+        return obtenerSiguienteRecursivo(raiz, valor, null);
+    }
+
+    private T obtenerSiguienteRecursivo(
+            NodoArbol<T> actual,
+            T valor,
+            T sucesor) {
+
+        if (actual == null) {
+            return sucesor;
+        }
+
+        int comparacion = valor.compareTo(actual.getDato());
+
+        if (comparacion < 0) {
+
+            sucesor = actual.getDato();
+
+            return obtenerSiguienteRecursivo(
+                    actual.getIzquierda(),
+                    valor,
+                    sucesor
+            );
+
+        } else if (comparacion > 0) {
+
+            return obtenerSiguienteRecursivo(
+                    actual.getDerecha(),
+                    valor,
+                    sucesor
+            );
+
+        } else {
+
+            if (actual.getDerecha() != null) {
+                return encontrarMinimo(actual.getDerecha());
+            }
+
+            return sucesor;
+        }
+    }
+
+    public T obtenerAnterior(T valor) {
+
+        return obtenerAnteriorRecursivo(raiz, valor, null);
+    }
+
+    private T obtenerAnteriorRecursivo(
+            NodoArbol<T> actual,
+            T valor,
+            T anterior) {
+
+        if (actual == null) {
+            return anterior;
+        }
+
+        int comparacion = valor.compareTo(actual.getDato());
+
+        if (comparacion > 0) {
+
+            anterior = actual.getDato();
+
+            return obtenerAnteriorRecursivo(
+                    actual.getDerecha(),
+                    valor,
+                    anterior
+            );
+
+        } else if (comparacion < 0) {
+
+            return obtenerAnteriorRecursivo(
+                    actual.getIzquierda(),
+                    valor,
+                    anterior
+            );
+
+        } else {
+
+            if (actual.getIzquierda() != null) {
+
+                NodoArbol<T> nodo = actual.getIzquierda();
+
+                while (nodo.getDerecha() != null) {
+                    nodo = nodo.getDerecha();
+                }
+
+                return nodo.getDato();
+            }
+
+            return anterior;
+        }
     }
 }

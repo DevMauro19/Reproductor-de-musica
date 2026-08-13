@@ -2,12 +2,13 @@ package modelo;
 
 import Exceptions.EAnioInvalido;
 import Exceptions.ECalificacion;
+import Exceptions.ENumeroNegativo;
 import Exceptions.EVacia;
 
 import java.util.Locale;
 
 //Clase que representa la información de una canción
-public class Cancion {
+public class Cancion implements Comparable<Cancion> {
     private String nombre;
     private String artista;
     private String album;
@@ -16,16 +17,16 @@ public class Cancion {
     private int anioLanzamiento;
     private int calificacion;
 
-    public Cancion(){
+    public Cancion(){}
 
-    }
-    public Cancion(String nombre, String artista, String album, int duracionEnSegundos, String genero, int anioLanzamiento) throws EVacia {
+    public Cancion(String nombre, String artista, String album, int duracionEnSegundos, String genero, int anioLanzamiento) throws EVacia, ENumeroNegativo {
 
         if(nombre.isEmpty()||nombre.trim().isEmpty())throw new EVacia("El nombre de la cancion no puede estar vacio");
-
         if(artista.isEmpty()||artista.trim().isEmpty()) throw new EVacia("El nombre del artista no puede ser vacio");
         if(album.isEmpty()||album.trim().isEmpty()) throw new EVacia("La cancion no puede no pertenecer a algun album");
-
+        if(duracionEnSegundos<0) throw new ENumeroNegativo("La duración no puede ser negativa el valor ingrsado fue: "+duracionEnSegundos);
+        if(genero.isEmpty()||genero.trim().isEmpty()) throw new EVacia("El genro no puede ser vacio");
+        if(anioLanzamiento<0) throw new ENumeroNegativo(" El anio no puede ser negativo, el anio ingresado fue: "+anioLanzamiento);
 
         this.nombre = nombre;
         this.artista = artista;
@@ -102,5 +103,10 @@ public class Cancion {
                 ", anioLanzamiento=" + anioLanzamiento +
                 ", calificacion=" + calificacion +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Cancion o) {
+        return this.getNombre().compareToIgnoreCase(o.getNombre());
     }
 }
