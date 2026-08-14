@@ -1,5 +1,5 @@
 package Estructuras;
-
+import java.util.ArrayList;
 //La responsabilidad de esta clase es administrar una colección de elementos conectados circularmente en ambas direcciones
 public class ListaCircularDoble<T> {
     private Nodo<T> cabeza;
@@ -155,32 +155,43 @@ public class ListaCircularDoble<T> {
         tamano--;
         return true;
     }
-    //Recorrido hacia delante
-    public void recorrerAdelante() {
+    //Devuelve todos los elementos en orden empezando por la cabeza
+    //Devolvemos la lista en vez de imprimirla para que la estructura no dependa de la consola
+    public ArrayList<T> recorrerAdelante() {
+        ArrayList<T> elementos = new ArrayList<>();
+
         if (estaVacia()) {
-            return;
+            return elementos; //devolvemos una lista sin elementos, nunca null
         }
 
         Nodo<T> actual = cabeza;
 
         do {
-            System.out.println(actual.getDato());
+            elementos.add(actual.getDato());
             actual = actual.getSiguiente();
         } while (actual != cabeza);
+
+        return elementos;
     }
 
-    //Recorrer hacia a atras
-    public void recorrerAtras() {
+    //Lo mismo pero arrancando desde el ultimo nodo y devolviendose
+    public ArrayList<T> recorrerAtras() {
+        ArrayList<T> elementos = new ArrayList<>();
+
         if (estaVacia()) {
-            return;
+            return elementos;
         }
 
-        Nodo<T> actual = cabeza.getAnterior();
+        Nodo<T> cola = cabeza.getAnterior(); //lo guardamos una vez en vez de recalcularlo en cada vuelta
+        Nodo<T> actual = cola;
 
         do {
-            System.out.println(actual.getDato());
+            elementos.add(actual.getDato());
             actual = actual.getAnterior();
-        } while (actual != cabeza.getAnterior());
+        } while (actual != cola);
+
+        return elementos;
     }
+
 
 }
