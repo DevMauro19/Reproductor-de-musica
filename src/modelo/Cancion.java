@@ -104,7 +104,22 @@ public class Cancion implements Comparable<Cancion> {
                 ", calificacion=" + calificacion +
                 '}';
     }
+    //Dos canciones se consideran iguales si tienen el mismo nombre
+    //Lo necesitamos para que buscar() y eliminar() comparen contenido y no direcciones de memoria
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
+        Cancion otra = (Cancion) obj;
+        return this.nombre.equalsIgnoreCase(otra.nombre);
+    }
+
+    //Si sobreescribimos equals hay que sobreescribir hashCode, es el contrato de Java
+    @Override
+    public int hashCode() {
+        return nombre.toLowerCase().hashCode();
+    }
     @Override
     public int compareTo(Cancion o) {
         return this.getNombre().compareToIgnoreCase(o.getNombre());

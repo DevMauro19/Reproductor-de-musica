@@ -1,6 +1,5 @@
 package Estructuras;
 
-import modelo.Cancion;
 //La responsabilidad de esta clase es administrar una colección de elementos conectados circularmente en ambas direcciones
 public class ListaCircularDoble<T> {
     private Nodo<T> cabeza;
@@ -16,6 +15,12 @@ public class ListaCircularDoble<T> {
 
     public int getTamano(){
         return this.tamano;
+    }
+
+    //Devuelve el nodo cabeza para poder recorrer la lista desde afuera
+    //Sino ModoAleatorio no tiene por donde empezar a navegar :v
+    public Nodo<T> getCabeza(){
+        return this.cabeza;
     }
 
     public void insertarInicio(T valor) {
@@ -96,7 +101,60 @@ public class ListaCircularDoble<T> {
         sigDeAnt.setAnterior(nuevo);      // nuevo <- sigDeAnt
         tamano++;
     }
+    //Busca un elemento dentro de la lista y devuelve el nodo que lo contiene
+    //Si no lo encuentra devuelve null
+    public Nodo<T> buscar(T valor) {
+        if (estaVacia()) {
+            return null;
+        }
 
+        Nodo<T> actual = cabeza;
+
+        do {
+            //equals compara el contenido, no la direccion de memoria
+            if (actual.getDato().equals(valor)) {
+                return actual;
+            }
+            actual = actual.getSiguiente();
+        } while (actual != cabeza); //paramos cuando damos la vuelta completa
+
+        return null; //recorrimos toda la lista y no aparecio
+    }
+    //Elimina el nodo que contiene el valor recibido
+    //Devuelve true si lo encontro y lo elimino, false si no estaba
+    public boolean eliminar(T valor) {
+        Nodo<T> objetivo = buscar(valor); //reutilizamos la busqueda de arriba
+
+        if (objetivo == null) {
+            return false; //no esta en la lista, no hay nada que borrar
+        }
+
+        // Caso 1: es el unico nodo que queda, la lista queda vacia
+        if (tamano == 1) {
+            cabeza = null;
+            tamano--;
+            return true;
+        }
+
+        Nodo<T> anterior = objetivo.getAnterior();
+        Nodo<T> siguiente = objetivo.getSiguiente();
+
+        // Caso 2: saltamos el nodo objetivo conectando a sus dos vecinos entre si
+        anterior.setSiguiente(siguiente);   // anterior -> siguiente
+        siguiente.setAnterior(anterior);    // anterior <- siguiente
+
+        // Caso 3: si el que borramos era la cabeza, la cabeza pasa a ser el siguiente
+        if (objetivo == cabeza) {
+            cabeza = siguiente;
+        }
+
+        // Soltamos las referencias del nodo eliminado para que el recolector de basura lo limpie
+        objetivo.setSiguiente(null);
+        objetivo.setAnterior(null);
+
+        tamano--;
+        return true;
+    }
     //Recorrido hacia delante
     public void recorrerAdelante() {
         if (estaVacia()) {
