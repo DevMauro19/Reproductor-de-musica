@@ -17,6 +17,7 @@ public abstract class ModoReproduccion {
 
     public Cancion getActual(){
         return actual;
-    };
+    }
+    public abstract Cancion eliminarCancion(Cancion cancion);
 
 }

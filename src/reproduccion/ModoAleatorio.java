@@ -57,4 +57,40 @@ public class ModoAleatorio extends ModoReproduccion {
         actual = nodoActual.getDato();
         return actual;
     }
+
+    @Override
+    public Cancion eliminarCancion(Cancion c){
+
+        //Buscamos el nodo que contiene la canción
+        Nodo<Cancion> objetivo=lista.buscar(c);
+
+        //La canción no existe
+        if(objetivo==null){
+            return null;
+        }
+
+        //comprobamos si la canción que vamos a eliminar
+        // es la canción actual
+        boolean esActual=actual!=null&&actual.compareTo(c)==0;
+
+        //Guardamos el siguiente nodo antes de eliminar
+        Nodo<Cancion> siguiente=objetivo.getSiguiente();
+
+        //Eliminamos el nodo
+        lista.eliminar(objetivo);
+
+        //si eliminamos la cancion actual
+        if(esActual){
+            //si la lista quedo vacia
+            if(lista.estaVacia()){
+                nodoActual=null;
+                actual=null;
+            }else{
+                //pasamos a la siguiente cancion
+                nodoActual=siguiente;
+                actual=nodoActual.getDato();
+            }
+        }
+        return c;
+    }
 }

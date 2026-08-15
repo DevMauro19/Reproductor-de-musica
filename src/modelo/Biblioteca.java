@@ -24,9 +24,9 @@ public class Biblioteca {
 
     public Cancion buscarCancion(String nombre) throws ECancion{
 
-
         ListIterator <Cancion> iterator=canciones.listIterator();
         Cancion x=new Cancion();
+        x=iterator.next();
         while(iterator.hasNext()&&!x.getNombre().equalsIgnoreCase(nombre)){
             x=iterator.next();
         }

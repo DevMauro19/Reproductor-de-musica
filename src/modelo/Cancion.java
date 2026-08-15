@@ -122,6 +122,16 @@ public class Cancion implements Comparable<Cancion> {
     }
     @Override
     public int compareTo(Cancion o) {
-        return this.getNombre().compareToIgnoreCase(o.getNombre());
+
+        //tenemos que tener en cuenta que el nombre de la cancion se puede repetir
+        //por lo que también compararemos por el artista
+
+        int comparacionNombre=this.nombre.compareToIgnoreCase(o.nombre);
+
+        if(comparacionNombre!=0){
+            return comparacionNombre;
+        }
+
+        return this.artista.compareToIgnoreCase(o.artista);
     }
 }

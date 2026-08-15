@@ -1,5 +1,7 @@
 package Estructuras;
 
+import modelo.Cancion;
+
 //Implementa el arbol binario de busqueda
 //Su responsabilidad es mantener los elementos ordenados según su criterio de comparación.
 public class ArbolBinarioBusqueda<T extends Comparable<T>> {
@@ -90,11 +92,12 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> {
         }
     }
 
-    public void eliminar(T valor) {
+    public NodoArbol<T> eliminar(T valor) {
         if (buscar(valor)) {
             raiz = eliminarRecursivo(raiz, valor);
             tamano--;
         }
+        return raiz;
     }
     private NodoArbol<T> eliminarRecursivo(NodoArbol<T> actual, T valor) {
 

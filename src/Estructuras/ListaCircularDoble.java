@@ -1,4 +1,6 @@
 package Estructuras;
+import Exceptions.EPosicion;
+
 import java.util.ArrayList;
 //La responsabilidad de esta clase es administrar una colección de elementos conectados circularmente en ambas direcciones
 public class ListaCircularDoble<T> {
@@ -66,11 +68,10 @@ public class ListaCircularDoble<T> {
         tamano++;
     }
 
-    public void insertarEnPosicion(int posicion, T valor) {
+    public void insertarEnPosicion(int posicion, T valor)throws EPosicion {
         if (posicion < 0 || posicion > tamano) {
-            System.out.println("⚠ Posición " + posicion + " inválida. "
+            throw new EPosicion("Posición " + posicion + " inválida. "
                     + "Rango válido: [0, " + tamano + "]");
-            return;
         }
 
         if (posicion == 0) {
@@ -193,5 +194,37 @@ public class ListaCircularDoble<T> {
         return elementos;
     }
 
+
+    public void eliminar(Nodo<T> target) {
+        //si el objetivo a eliminar no existe
+        if (target == null || cabeza == null) return;
+
+        //Caso 1: Es el único nodo de la lista
+        if(target.getSiguiente()==target &&target.getAnterior()==target){
+            cabeza=null;
+        }else {
+            //Desenlazar el nodo reconfigurando los vecinos
+            Nodo<T> anterior=target.getAnterior();
+            Nodo<T> siguiente=target.getSiguiente();
+
+            anterior.setSiguiente(siguiente);
+            siguiente.setAnterior(anterior);
+
+            /*
+            *   //Es lo mismo que hacer esto:
+                target->prev->next = nodo->next;
+                target->next->prev = nodo->prev;
+
+            */
+
+            // Caso 2: si el nodo a eliminar es la cabeza
+            if(target== cabeza){
+                cabeza=target.getSiguiente();
+            }
+        }
+        tamano--;
+
+
+    }
 
 }

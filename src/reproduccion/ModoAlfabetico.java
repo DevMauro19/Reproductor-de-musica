@@ -60,4 +60,30 @@ public class ModoAlfabetico extends ModoReproduccion {
     public Cancion getActual() {
         return actual;
     }
+
+    @Override
+    public Cancion eliminarCancion(Cancion c) {
+        // La canción no existe en el árbol
+        if (!arbol.buscar(c)) {
+            return null;
+        }
+
+        // Si estamos eliminando la canción actual,
+        // obtenemos la siguiente ANTES de eliminarla.
+        Cancion siguiente = null;
+
+        if (actual != null && actual.compareTo(c) == 0) {
+            siguiente = arbol.obtenerSiguiente(actual);
+        }
+
+        // Eliminamos la canción
+        arbol.eliminar(c);
+
+        // Si eliminamos la canción actual
+        if (actual != null && actual.compareTo(c) == 0) {
+            actual = siguiente;
+        }
+
+        return c;
+    }
 }
