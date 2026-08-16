@@ -1,19 +1,23 @@
 package modelo;
 
 import Exceptions.ECancion;
+import Exceptions.ENumeroNegativo;
+import Exceptions.EVacia;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
 
 public class Biblioteca {
 
-
+    //Atributo donde se van a guardar las canciones en un principio
     private ArrayList<Cancion> canciones;
 
+    //Constructor
     public Biblioteca() {
         canciones = new ArrayList<>();
     }
 
+    //metodos crud
     public void agregarCancion(Cancion cancion) {
         canciones.add(cancion);
     }
@@ -37,6 +41,21 @@ public class Biblioteca {
         }
     }
 
+    //Metodo de actualizar cancion
+    public void actualizarCancion(Cancion c, String newNombre,
+                                  String newArtista, String newAlbum,
+                                  int newDuracionEnSegundos, String newGenero,
+                                  int newAnio) throws EVacia, ENumeroNegativo{
+        c.setNombre(newNombre);
+        c.setArtista(newArtista);
+        c.setAlbum(newAlbum);
+        c.setDuracionEnSegundos(newDuracionEnSegundos);
+        c.setGenero(newGenero);
+        c.setAnioLanzamiento(newAnio);
+    }
+
+
+    //Getters and setters
     public ArrayList<Cancion> getCanciones() {
         return canciones;
     }

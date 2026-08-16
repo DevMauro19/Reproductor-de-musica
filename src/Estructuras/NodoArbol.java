@@ -3,16 +3,19 @@ package Estructuras;
 //La responsabilidad de esta clase es representar un árbol
 public class NodoArbol<A> {
 
+    //Atributos de la clase
     private A dato;
     private NodoArbol<A> hijoIzq;
     private NodoArbol<A> hijoDer;
 
+    //Constructor
     public NodoArbol(A dato) {
         this.dato = dato;
         this.hijoIzq = null;
         this.hijoDer = null;
     }
 
+    //Getters and setters
     public A getDato() {
         return dato;
     }

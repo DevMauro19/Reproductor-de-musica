@@ -40,7 +40,10 @@ public class Cancion implements Comparable<Cancion> {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)throws EVacia {
+        if(nombre==null || nombre.isEmpty()){
+            throw new EVacia("El nombre no puede estar vacio");
+        }
         this.nombre = nombre;
     }
 
@@ -48,7 +51,10 @@ public class Cancion implements Comparable<Cancion> {
         return artista;
     }
 
-    public void setArtista(String artista) {
+    public void setArtista(String artista) throws EVacia {
+        if(artista==null || artista.isEmpty()){
+            throw new EVacia("El artista no puede estar en vacio");
+        }
         this.artista = artista;
     }
 
@@ -56,7 +62,10 @@ public class Cancion implements Comparable<Cancion> {
         return album;
     }
 
-    public void setAlbum(String album) {
+    public void setAlbum(String album) throws EVacia {
+        if(album==null || album.isEmpty()){
+            throw new EVacia("El campo del album no puede estar vacio");
+        }
         this.album = album;
     }
 
@@ -64,7 +73,10 @@ public class Cancion implements Comparable<Cancion> {
         return duracionEnSegundos;
     }
 
-    public void setDuracionEnSegundos(int duracionEnSegundos) {
+    public void setDuracionEnSegundos(int duracionEnSegundos)throws ENumeroNegativo{
+        if(duracionEnSegundos<0){
+            throw new ENumeroNegativo("La duracion no puede ser negativa");
+        }
         this.duracionEnSegundos = duracionEnSegundos;
     }
 
@@ -72,7 +84,11 @@ public class Cancion implements Comparable<Cancion> {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(String genero) throws EVacia {
+        if (genero == null || genero.isEmpty()) {
+            throw new EVacia("El campo de genero no puede estar vacio");
+        }
+
         this.genero = genero;
     }
 
@@ -80,7 +96,10 @@ public class Cancion implements Comparable<Cancion> {
         return anioLanzamiento;
     }
 
-    public void setAnioLanzamiento(int anioLanzamiento) {
+    public void setAnioLanzamiento(int anioLanzamiento) throws ENumeroNegativo {
+        if(anioLanzamiento<0){
+            throw new ENumeroNegativo("El anio de lanzamiento no puede ser negativo");
+        }
         this.anioLanzamiento = anioLanzamiento;
     }
 
@@ -88,7 +107,10 @@ public class Cancion implements Comparable<Cancion> {
         return calificacion;
     }
 
-    public void setCalificacion(int calificacion) {
+    public void setCalificacion(int calificacion) throws ECalificacion {
+        if(calificacion<0 || calificacion>100){
+            throw new ECalificacion(calificacion);
+        }
         this.calificacion = calificacion;
     }
 

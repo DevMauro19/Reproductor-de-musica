@@ -15,6 +15,7 @@ public class Nodo <E>{
         this.siguiente=null;
         this.anterior=null;
     }
+
     //Getters and Setters
     public E getDato() {
         return dato;

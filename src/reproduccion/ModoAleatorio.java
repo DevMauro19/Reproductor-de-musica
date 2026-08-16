@@ -2,6 +2,7 @@ package reproduccion;
 
 import Estructuras.ListaCircularDoble;
 import Estructuras.Nodo;
+import Exceptions.EVacia;
 import modelo.Cancion;
 
 import java.util.Random;
@@ -14,6 +15,7 @@ public class ModoAleatorio extends ModoReproduccion {
     private Nodo<Cancion> nodoActual; //el cursor que marca en que parte de la lista vamos
     private Random random;
 
+    //Constructor
     public ModoAleatorio() {
         lista = new ListaCircularDoble<>();
         random = new Random();
@@ -21,6 +23,7 @@ public class ModoAleatorio extends ModoReproduccion {
         actual = null;
     }
 
+    //Agregar una cancion
     @Override
     public void agregarCancion(Cancion cancion) {
         //Insertamos en una posicion al azar para que la lista quede desordenada desde que se arma
@@ -34,6 +37,7 @@ public class ModoAleatorio extends ModoReproduccion {
         }
     }
 
+    //Obtener la siguiente cancion
     @Override
     public Cancion siguiente() {
         if (nodoActual == null) {
@@ -46,6 +50,7 @@ public class ModoAleatorio extends ModoReproduccion {
         return actual;
     }
 
+    //Obtener la anterior cancion
     @Override
     public Cancion anterior() {
         if (nodoActual == null) {
@@ -58,15 +63,16 @@ public class ModoAleatorio extends ModoReproduccion {
         return actual;
     }
 
+    //Eliminar una cancion de la lista
     @Override
-    public Cancion eliminarCancion(Cancion c){
+    public Cancion eliminarCancion(Cancion c)throws EVacia {
 
         //Buscamos el nodo que contiene la canción
         Nodo<Cancion> objetivo=lista.buscar(c);
 
         //La canción no existe
         if(objetivo==null){
-            return null;
+            throw new EVacia("La cancion no el nombre de: "+c.getNombre()+" no se encuentra en la lista");
         }
 
         //comprobamos si la canción que vamos a eliminar

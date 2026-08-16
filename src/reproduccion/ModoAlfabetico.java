@@ -6,13 +6,16 @@ import modelo.Cancion;
 
 public class ModoAlfabetico extends ModoReproduccion {
 
+    //crear el arbol de reproduccion
     private ArbolBinarioBusqueda<Cancion> arbol;
 
+    //Constructor
     public ModoAlfabetico() {
         arbol = new ArbolBinarioBusqueda<>();
         actual = null;
     }
 
+    //Agregar Canciones
     @Override
     public void agregarCancion(Cancion cancion) {
         arbol.insertar(cancion);
@@ -24,6 +27,7 @@ public class ModoAlfabetico extends ModoReproduccion {
         }
     }
 
+    //Pasar a la siguiente
     @Override
     public Cancion siguiente() {
 
@@ -40,6 +44,7 @@ public class ModoAlfabetico extends ModoReproduccion {
         return actual;
     }
 
+    //Pasar a la anterior
     @Override
     public Cancion anterior() {
 
@@ -56,11 +61,13 @@ public class ModoAlfabetico extends ModoReproduccion {
         return actual;
     }
 
+    //obtener la cancion actual
     @Override
     public Cancion getActual() {
         return actual;
     }
 
+    //Eliminar cancion
     @Override
     public Cancion eliminarCancion(Cancion c) {
         // La canción no existe en el árbol

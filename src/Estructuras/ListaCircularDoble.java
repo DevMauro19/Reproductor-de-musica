@@ -7,14 +7,18 @@ public class ListaCircularDoble<T> {
     private Nodo<T> cabeza;
     private int tamano;
 
+    //Constructor
     public ListaCircularDoble() {
         this.cabeza = null;
         tamano=0;
     }
+
+    //Saber si la lista esta vacia
     public boolean estaVacia(){
         return cabeza==null; //compara y devuelve el valor de TRUE si la cabeza es nula
     }
 
+    //Obtener el tamaño de la lista
     public int getTamano(){
         return this.tamano;
     }
@@ -25,6 +29,7 @@ public class ListaCircularDoble<T> {
         return this.cabeza;
     }
 
+    //para insertar al inicio de la lista
     public void insertarInicio(T valor) {
         Nodo<T> nuevo = new Nodo<>(valor);
 
@@ -48,6 +53,8 @@ public class ListaCircularDoble<T> {
         }
         tamano++;
     }
+
+    //Para insertar al final de la lista
     public void insertarFinal(T valor) {
         Nodo<T> nuevo = new Nodo<>(valor);
 
@@ -68,6 +75,7 @@ public class ListaCircularDoble<T> {
         tamano++;
     }
 
+    //Insertar en una posicion intermedia o donde yo decida
     public void insertarEnPosicion(int posicion, T valor)throws EPosicion {
         if (posicion < 0 || posicion > tamano) {
             throw new EPosicion("Posición " + posicion + " inválida. "
@@ -102,6 +110,7 @@ public class ListaCircularDoble<T> {
         sigDeAnt.setAnterior(nuevo);      // nuevo <- sigDeAnt
         tamano++;
     }
+
     //Busca un elemento dentro de la lista y devuelve el nodo que lo contiene
     //Si no lo encuentra devuelve null
     public Nodo<T> buscar(T valor) {

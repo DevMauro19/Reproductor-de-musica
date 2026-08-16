@@ -1,4 +1,7 @@
 package Estructuras;
+
+import java.util.ArrayList;
+
 // Implementación de la cola simple, su responsabilidad es mantener el comportamiento (FIFO)
 public class Cola<Q> {
         private Nodo<Q> cabeza; // inicio de la cola(frente)
@@ -12,14 +15,17 @@ public class Cola<Q> {
                 this.tamano = 0;
         }
 
+        //Verificar si esta vacio
         public boolean estaVacia() {
                 return cabeza == null;
         }
 
+        // obtener el tamaño de la cola
         public int getTamano() {
                 return this.tamano;
         }
 
+        //agregamos un elemento a la cola
         public void encolar(Q dato) {
                 Nodo<Q> nuevo = new Nodo<>(dato);
 
@@ -33,6 +39,7 @@ public class Cola<Q> {
                 tamano++;
         }
 
+        // sacamos un elemento de la cola
         public Q desencolar(){
 
                 if(estaVacia()){
@@ -51,18 +58,26 @@ public class Cola<Q> {
                 return dato;
         }
 
-
-        public Q cabeza(){
+        // obtener el primer elemento de la cola
+        public Q cabeza(){ //cabeza o frente (es lo mismo)
                 if(estaVacia()){
                         return null;
                 }
                 return cabeza.getDato();
         }
 
-        public void recorrer(){
-                Nodo<Q> actual= cabeza;
-                System.out.println(actual.getDato());
-                actual=actual.getSiguiente();
+        //Guardar la cola para mostrarla en la interfaz
+        public ArrayList<Q> recorrer() {
+                ArrayList<Q> elementos = new ArrayList<>();
+
+                Nodo<Q> actual = cabeza;
+
+                while (actual != null) {
+                        elementos.add(actual.getDato());
+                        actual = actual.getSiguiente();
+                }
+
+                return elementos;
         }
 
 
