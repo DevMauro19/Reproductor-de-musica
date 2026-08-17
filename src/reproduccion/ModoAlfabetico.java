@@ -52,9 +52,7 @@ public class ModoAlfabetico extends ModoReproduccion {
 
         Cancion anterior = arbol.obtenerAnterior(actual);
 
-        if (anterior != null) {
             actual = anterior;
-        }
 
         return actual;
     }
