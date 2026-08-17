@@ -243,10 +243,14 @@ public class VentanaPrincipal extends JFrame {
         JButton btnEditar = crearBotonPildora("Editar", BG_FIELD);
         btnEditar.addActionListener(e -> editarSeleccionada());
 
+        JButton btnCalificar = crearBotonPildora("\u2605 Calificar", BG_FIELD);
+        btnCalificar.addActionListener(e -> calificarSeleccionada());
+
         JButton btnEliminar = crearBotonPildora("Eliminar", BG_FIELD);
         btnEliminar.addActionListener(e -> eliminarSeleccionada());
 
         botones.add(btnEditar);
+        botones.add(btnCalificar);
         botones.add(btnEliminar);
         botones.add(btnAgregar);
 
@@ -258,7 +262,9 @@ public class VentanaPrincipal extends JFrame {
     private JScrollPane construirTabla() {
         String[] columnas = {"Nombre", "Artista", "Album", "Duracion", "Genero", "Anio", "Calificacion"};
         tableModel = new DefaultTableModel(columnas, 0) {
-            @Override public boolean isCellEditable(int row, int col) { return col == 6; }
+            //La calificacion ya no se edita en la celda: se gestiona con el boton "Calificar"
+            //y su dialogo dedicado (ver calificarSeleccionada / abrirDialogoCalificacion).
+            @Override public boolean isCellEditable(int row, int col) { return false; }
             @Override public Class<?> getColumnClass(int col) { return col == 6 ? Integer.class : String.class; }
         };
 
@@ -278,14 +284,6 @@ public class VentanaPrincipal extends JFrame {
         tabla.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, DIVIDER));
         tabla.setDefaultRenderer(Object.class, new FilaRenderer());
         tabla.setDefaultRenderer(Integer.class, new FilaRenderer());
-
-        tabla.getModel().addTableModelListener(evt -> {
-            int fila = evt.getFirstRow();
-            int columna = evt.getColumn();
-            if (columna == 6 && fila >= 0 && fila < filasVisibles.size()) {
-                actualizarCalificacion(fila);
-            }
-        });
 
         //Doble clic sobre una fila reproduce esa cancion directamente (como en Apple Music)
         tabla.addMouseListener(new MouseAdapter() {
@@ -547,20 +545,6 @@ public class VentanaPrincipal extends JFrame {
         }
     }
 
-    private void actualizarCalificacion(int fila) {
-        Cancion c = filasVisibles.get(fila);
-        Object valor = tableModel.getValueAt(fila, 6);
-        try {
-            int nueva = (valor instanceof Integer) ? (Integer) valor : Integer.parseInt(valor.toString());
-            c.setCalificacion(nueva);
-        } catch (ECalificacion | NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this,
-                    "La calificacion debe ser un numero entre 0 y 100.",
-                    "Calificacion invalida", JOptionPane.WARNING_MESSAGE);
-            tableModel.setValueAt(c.getCalificacion(), fila, 6); // revertimos el valor mostrado
-        }
-    }
-
     private void agregarATodasLasEstructuras(Cancion c) {
         biblioteca.agregarCancion(c);
         modoAleatorio.agregarCancion(c);
@@ -668,6 +652,93 @@ public class VentanaPrincipal extends JFrame {
                     "Revisa los datos ingresados: ningun campo puede estar vacio ni ser negativo.",
                     "Datos invalidos", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    // ======================================================================
+    //  CALIFICACION DE CANCIONES
+    // ======================================================================
+    private void calificarSeleccionada() {
+        int fila = tabla.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Selecciona una cancion de la tabla primero.");
+            return;
+        }
+        Cancion c = filasVisibles.get(fila);
+        abrirDialogoCalificacion(c);
+    }
+
+    //Dialogo con un slider libre (0-100) para calificar la cancion seleccionada.
+    private void abrirDialogoCalificacion(Cancion c) {
+        JDialog dialogo = new JDialog(this, "Calificar cancion", true);
+        dialogo.setUndecorated(true);
+        dialogo.getRootPane().setBorder(BorderFactory.createLineBorder(DIVIDER));
+
+        JPanel contenido = new JPanel();
+        contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
+        contenido.setBackground(BG_CARD);
+        contenido.setBorder(new EmptyBorder(24, 28, 24, 28));
+
+        JLabel titulo = new JLabel(c.getNombre());
+        titulo.setFont(FONT_SONG);
+        titulo.setForeground(TXT_PRIMARY);
+        titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel subtitulo = new JLabel(c.getArtista());
+        subtitulo.setFont(FONT_SMALL);
+        subtitulo.setForeground(TXT_SECONDARY);
+        subtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subtitulo.setBorder(new EmptyBorder(2, 0, 22, 0));
+
+        JLabel labelValor = new JLabel(c.getCalificacion() + " / 100");
+        labelValor.setFont(FONT_TITLE);
+        labelValor.setForeground(ACCENT);
+        labelValor.setAlignmentX(Component.CENTER_ALIGNMENT);
+        labelValor.setBorder(new EmptyBorder(0, 0, 10, 0));
+
+        JSlider slider = new JSlider(0, 100, c.getCalificacion());
+        slider.setBackground(BG_CARD);
+        slider.setForeground(TXT_SECONDARY);
+        slider.setMajorTickSpacing(20);
+        slider.setMinorTickSpacing(5);
+        slider.setPaintTicks(true);
+        slider.setAlignmentX(Component.CENTER_ALIGNMENT);
+        slider.setPreferredSize(new Dimension(280, 45));
+        slider.addChangeListener(e -> labelValor.setText(slider.getValue() + " / 100"));
+
+        JPanel botones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        botones.setBackground(BG_CARD);
+        botones.setBorder(new EmptyBorder(18, 0, 0, 0));
+
+        JButton btnCancelar = crearBotonPildora("Cancelar", BG_FIELD);
+        btnCancelar.addActionListener(e -> dialogo.dispose());
+
+        JButton btnGuardar = crearBotonPildora("Guardar", ACCENT);
+        btnGuardar.addActionListener(e -> {
+            try {
+                c.setCalificacion(slider.getValue());
+            } catch (ECalificacion ex) {
+                JOptionPane.showMessageDialog(dialogo,
+                        "La calificacion debe estar entre 0 y 100.",
+                        "Calificacion invalida", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            filtrarBiblioteca();
+            dialogo.dispose();
+        });
+
+        botones.add(btnCancelar);
+        botones.add(btnGuardar);
+
+        contenido.add(titulo);
+        contenido.add(subtitulo);
+        contenido.add(labelValor);
+        contenido.add(slider);
+        contenido.add(botones);
+
+        dialogo.setContentPane(contenido);
+        dialogo.pack();
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setVisible(true);
     }
 
     // ======================================================================

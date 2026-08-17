@@ -31,7 +31,6 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> {
     public void insertar(T valor) {
         if (raiz == null) {
             raiz = new NodoArbol<>(valor);
-            tamano++;
         } else {
             insertarRecursivo(raiz, valor);
         }

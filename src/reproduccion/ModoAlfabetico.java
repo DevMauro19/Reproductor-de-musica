@@ -37,8 +37,11 @@ public class ModoAlfabetico extends ModoReproduccion {
 
         Cancion siguiente = arbol.obtenerSiguiente(actual);
 
-        actual = siguiente;
-
+        // Si ya estamos en la ultima cancion alfabeticamente, nos quedamos
+        // donde estamos en vez de perder la reproduccion.
+        if (siguiente != null) {
+            actual = siguiente;
+        }
         return actual;
     }
 
@@ -52,7 +55,11 @@ public class ModoAlfabetico extends ModoReproduccion {
 
         Cancion anterior = arbol.obtenerAnterior(actual);
 
+        // Si ya estamos en la primera cancion alfabeticamente, nos quedamos
+        // donde estamos en vez de perder la reproduccion.
+        if (anterior != null) {
             actual = anterior;
+        }
 
         return actual;
     }
