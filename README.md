@@ -91,6 +91,16 @@ No requiere dependencias externas ni gestor de builds (Maven/Gradle): el proyect
 \* Eliminar una canción que no está en el frente de la cola requiere reconstruirla completa, ya que una cola simple solo opera sobre sus extremos.
 \** La inserción en el modo aleatorio es O(n) porque primero se recorre hasta la posición aleatoria elegida; la cola y la lista en sí insertan en O(1) en sus extremos.
 
+### Complejidad en el modo aleatorio
+
+| Operación | Complejidad |
+|-----------|-------------|
+| Insertar **una** canción en una posición aleatoria | O(n) |
+| Insertar las **n** canciones para construir la lista completa | O(n²) |
+
 ## Autores
+- Pablo Escudero
+- Santiago Perez
+- Carlos Mauricio Velasco
 
 Proyecto desarrollado para el curso de Lenguajes y Compiladores — Universidad EIA.
